@@ -48,7 +48,8 @@ int main( int argc, char **argv )
     //calculate the gridSize, binSize, and then number of bin on one side;
     double gridSize = sqrt(n * density);
     double binSize = cutoff * 2;     // equals to the diameter of the circle
-    int binNum = int(gridSize / binSize) + 1; //
+    int binNum = int(gridSize / binSize) + 1; // the binNum should be +1
+    cout << binNum <<endl;
 
     vector<vector<int> >bin(binNum * binNum, vector<int> (0));
 
@@ -75,6 +76,9 @@ int main( int argc, char **argv )
             int row = floor(particles[i].x / binSize);     //calculate the row index of the bin
             int col = floor(particles[i].y / binSize);     //calculate the column index of the bin
 
+            //
+            //different cases to deal with
+            //
             //situation that the particle is not in the first or the last column of the grid
             if ((row > 0) && (row< binNum-1)){
                 for (int j = row-1; j <= row+1; j++){
@@ -84,18 +88,17 @@ int main( int argc, char **argv )
                              for (int l = 0; l < bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
                                  apply_force(particles[i], particles[fa], &dmin, &davg, &navg);
-                                }
+                            }
                         }
                     }
+
                     //situation that the particle is in the first column of the grid
                     else if (col == 0){
                         for (int k = col; k <= col+1; k++){
-                             //cout << "flag2"<<endl;
                             for (int l = 0; l < bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
                                  apply_force(particles[i], particles[fa], &dmin, &davg, &navg);
-                                 //cout << "flag3"<<endl;
-                             }       
+                            }       
                         }
                     }
                     //situation that the particle is in the last column of the grid
@@ -103,9 +106,8 @@ int main( int argc, char **argv )
                         for (int k = col-1; k <= col; k++){
                             for (int l = 0; l < bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
-                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);
-                                  
-                             }
+                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);                                 
+                            }
                         }
                     }
                 }
@@ -119,9 +121,8 @@ int main( int argc, char **argv )
                         for (int k = col-1; k <= col+1; k++){
                             for (int l = 0; l < bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
-                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);
-                                  
-                             }
+                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);                                  
+                            }
                         }
                     }
                     //situation that the particle is in the first column of the grid
@@ -129,9 +130,8 @@ int main( int argc, char **argv )
                         for (int k = col; k <= col+1; k++){
                             for (int l = 0; l < bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
-                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);
-                                  
-                             }
+                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);                                 
+                            }
                         }
                     }
                     //situation that the particle is in the last column of the grid
@@ -140,7 +140,7 @@ int main( int argc, char **argv )
                             for (int l = 0; l <bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
                                  apply_force(particles[i], particles[fa], &dmin, &davg, &navg);                                 
-                             }
+                            }
                         }
                     }
                 }
@@ -154,9 +154,8 @@ int main( int argc, char **argv )
                         for (int k = col-1; k <= col+1; k++){
                             for (int l = 0; l < bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
-                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);
-                                  
-                             }
+                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);                                  
+                            }
                         }
                     }
                     //situation that the particle is in the first column of the grid
@@ -164,9 +163,8 @@ int main( int argc, char **argv )
                         for (int k = col; k <= col+1; k++){
                             for (int l = 0; l < bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
-                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);
-                                  
-                             }
+                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);                                 
+                            }
                         }
                     }
                     //situation that the particle is in the last column of the grid
@@ -174,24 +172,13 @@ int main( int argc, char **argv )
                         for (int k = col-1; k <= col; k++){
                             for (int l = 0; l < bin[j*binNum + k].size(); l++){
                                  int fa = bin[j*binNum + k].at(l);
-                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);
-                                  
-                             }
+                                 apply_force(particles[i], particles[fa], &dmin, &davg, &navg);                                  
+                            }
                         }
                     }
                 }
             }
         }
-        // //  original algorithm
-        // //  compute forces
-        // //
-        // for( int i = 0; i < n; i++ )
-        // {
-        //     particles[i].ax = particles[i].ay = 0;
-        //     for (int j = 0; j < n; j++ )
-		// 		apply_force( particles[i], particles[j],&dmin,&davg,&navg);
-        // }
-
         //
         //before moving the particles we need to release the inside vectors
         //
